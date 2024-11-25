@@ -1,6 +1,22 @@
 import streamlit as st
 import pandas as pd
 from fpdf import FPDF
+import requests
+
+def descargar_usuarios_csv():
+    url = "https://raw.githubusercontent.com/Victorcortes-monroy01/Validacion-SAP-saldoscuenta/main/usuarios.csv"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Esto lanza un error si la descarga falla
+        with open("usuarios.csv", "wb") as file:
+            file.write(response.content)
+        print("Archivo usuarios.csv descargado correctamente.")
+    except requests.exceptions.RequestException as e:
+        print(f"Error al descargar el archivo usuarios.csv: {e}")
+        raise
+
+# Descargar el archivo antes de usarlo
+descargar_usuarios_csv()
 
 # Configuración inicial de la app
 st.set_page_config(page_title="Validación de Saldos SAP", layout="wide")
